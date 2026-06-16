@@ -211,11 +211,11 @@ Error handling:
           `Showing **${parsed.length}** of **${data.resultCount}** numbers (offset ${params.offset})${hasMore ? ` — next page: offset ${params.offset + parsed.length}` : ""}`
         );
         lines.push("");
-        lines.push("| 12-siffrig | 10-siffrig | Födelsedag | Kön |");
-        lines.push("|------------|-----------|------------|-----|");
+        lines.push("| 12-digit | 10-digit | Birth date | Gender |");
+        lines.push("|----------|----------|------------|--------|");
         for (const p of parsed) {
           lines.push(
-            `| \`${p.raw}\` | \`${p.tenDigit}\` | ${p.birthDate} | ${p.gender === "male" ? "Man" : "Kvinna"} |`
+            `| \`${p.raw}\` | \`${p.tenDigit}\` | ${p.birthDate} | ${p.gender} |`
           );
         }
         text = lines.join("\n");
@@ -333,11 +333,11 @@ Note: This tool only parses the format — it does NOT validate whether the numb
       const text = [
         `## Personnummer: \`${p.raw}\``,
         "",
-        `- **10-siffrig**: \`${p.tenDigit}\``,
-        `- **Födelsedag**: ${p.birthDate}`,
-        `- **Kön**: ${p.gender === "male" ? "Man" : "Kvinna"} (födelsenummer ${p.birthNumber} är ${p.birthNumber % 2 !== 0 ? "udda" : "jämnt"})`,
-        `- **Födelsenummer**: ${p.birthNumber}`,
-        `- **Kontrollsiffra**: ${checksumDigit}`,
+        `- **10-digit**: \`${p.tenDigit}\``,
+        `- **Birth date**: ${p.birthDate}`,
+        `- **Gender**: ${p.gender} (birth number ${p.birthNumber} is ${p.birthNumber % 2 !== 0 ? "odd" : "even"})`,
+        `- **Birth number**: ${p.birthNumber}`,
+        `- **Checksum digit**: ${checksumDigit}`,
       ].join("\n");
 
       return {
