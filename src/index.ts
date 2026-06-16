@@ -4,6 +4,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import axios, { AxiosError } from "axios";
 import { z } from "zod";
+import { parsePersonnummer, normalizeToTwelveDigit } from "./utils.js";
 
 const API_BASE_URL =
   "https://skatteverket.entryscape.net/rowstore/dataset/b4de7df7-63c0-4e7e-bb59-1f156a591763";
@@ -23,32 +24,6 @@ interface ApiResponse {
   results: Array<{ testpersonnummer: string }>;
 }
 
-interface ParsedPersonnummer {
-  raw: string;
-  birthDate: string;
-  year: number;
-  month: number;
-  day: number;
-  birthNumber: number;
-  gender: "male" | "female";
-  tenDigit: string;
-}
-
-function parsePersonnummer(pnr: string): ParsedPersonnummer {
-  const year = parseInt(pnr.slice(0, 4), 10);
-  const month = parseInt(pnr.slice(4, 6), 10);
-  const day = parseInt(pnr.slice(6, 8), 10);
-  const birthNumber = parseInt(pnr.slice(8, 11), 10);
-  const gender = birthNumber % 2 === 0 ? "female" : "male";
-  const yy = pnr.slice(2, 4);
-  const mm = pnr.slice(4, 6);
-  const dd = pnr.slice(6, 8);
-  const last4 = pnr.slice(8, 12);
-  const tenDigit = `${yy}${mm}${dd}-${last4}`;
-  const birthDate = `${year}-${mm}-${dd}`;
-
-  return { raw: pnr, birthDate, year, month, day, birthNumber, gender, tenDigit };
-}
 
 function handleApiError(error: unknown): string {
   if (error instanceof AxiosError) {
@@ -324,19 +299,10 @@ Note: This tool only parses the format — it does NOT validate whether the numb
   },
   async (params: ParseInput) => {
     try {
-      const cleaned = params.personnummer.replace(/[-+\s]/g, "");
-
       let twelveDigit: string;
-      if (cleaned.length === 10) {
-        const yy = parseInt(cleaned.slice(0, 2), 10);
-        const currentYear = new Date().getFullYear() % 100;
-        const century = yy <= currentYear ? "20" : "19";
-        twelveDigit = century + cleaned;
-      } else {
-        twelveDigit = cleaned;
-      }
-
-      if (twelveDigit.length !== 12) {
+      try {
+        twelveDigit = normalizeToTwelveDigit(params.personnummer);
+      } catch {
         return {
           isError: true,
           content: [
