@@ -1,0 +1,42 @@
+<evaluation>
+  <qa_pair>
+    <question>Search for Swedish test personal numbers born on the first day of January 1990. How many such test numbers exist in the dataset? Respond with just the number.</question>
+    <answer>10</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use the skatteverket_parse_testpersonnummer tool to parse the personnummer "196808240236". What is the person's gender? Answer "male" or "female".</question>
+    <answer>female</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Find test personal numbers from the dataset where the person was born in February 1945 (pattern starting with 194502). How many results are there in total? Respond with the exact total count.</question>
+    <answer>10</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Parse the test personnummer "200001010107". What is the ISO-format birth date? Use format YYYY-MM-DD.</question>
+    <answer>2000-01-01</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Search for test personal numbers with pattern "^1890" (born in the 1890s). What is the very first testpersonnummer in the result set (offset 0, limit 1)?</question>
+    <answer>189001019802</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>How many test personal numbers in total exist in the Skatteverket dataset? Use skatteverket_search_testpersonnummer with no pattern and check the total field. Respond with just the number.</question>
+    <answer>43895</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Parse the personnummer "199912312009". Is the birth_number (the 3-digit serial, digits 9-11) odd or even? Answer "odd" or "even".</question>
+    <answer>even</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Search for test personnummer born on Christmas Day 1980 (pattern "^19801225"). What is the ten_digit format of the first result? Use format YYMMDD-NNNN.</question>
+    <answer>801225-0007</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use skatteverket_search_testpersonnummer with pattern "^189001" (born January 1890). Retrieve the third result (offset 2, limit 1). What is the testpersonnummer?</question>
+    <answer>189001039800</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Parse "190001010006" with skatteverket_parse_testpersonnummer. What is the birth_number (3-digit serial)? Respond with just the number.</question>
+    <answer>0</answer>
+  </qa_pair>
+</evaluation>
