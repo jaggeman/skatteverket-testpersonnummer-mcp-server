@@ -47,31 +47,58 @@ npm run build
 
 ### Step 2 — Add to Claude Desktop
 
-Open `claude_desktop_config.json` in a text editor:
+> **Important:** Claude Desktop overwrites its config file while running. You must close it completely before editing, otherwise your changes will be lost.
 
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+**Windows:**
 
-Add the following (replace the path with the actual path where you cloned the repo):
+1. Quit Claude Desktop fully — right-click the tray icon → **Quit** (not just close the window)
+2. Open the config file in Notepad by running this in PowerShell or the Run dialog (`Win+R`):
+   ```
+   notepad %APPDATA%\Claude\claude_desktop_config.json
+   ```
+3. Add the new server inside the `"mcpServers"` block. Example of a complete file:
+   ```json
+   {
+     "mcpServers": {
+       "skatteverket-testpersonnummer": {
+         "command": "C:\\Program Files\\nodejs\\node.exe",
+         "args": [
+           "C:\\Users\\yourname\\skatteverket-testpersonnummer-mcp-server\\dist\\index.js"
+         ]
+       }
+     }
+   }
+   ```
+   Replace `yourname` and the path with where you cloned the repo. If you already have other MCP servers, add a comma after the last one and append this block.
+4. Save the file and close Notepad.
 
-```json
-{
-  "mcpServers": {
-    "skatteverket-testpersonnummer": {
-      "command": "node",
-      "args": ["/absolute/path/to/skatteverket-testpersonnummer-mcp-server/dist/index.js"]
-    }
-  }
-}
-```
+**macOS:**
 
-**Example paths:**
-- macOS: `"/Users/yourname/projects/skatteverket-testpersonnummer-mcp-server/dist/index.js"`
-- Windows: `"C:\\Users\\yourname\\projects\\skatteverket-testpersonnummer-mcp-server\\dist\\index.js"`
+1. Quit Claude Desktop: **Claude menu → Quit Claude**
+2. Open Terminal and run:
+   ```bash
+   open -e "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
+   ```
+3. Add the server the same way as above, using your actual path:
+   ```json
+   {
+     "mcpServers": {
+       "skatteverket-testpersonnummer": {
+         "command": "node",
+         "args": [
+           "/Users/yourname/skatteverket-testpersonnummer-mcp-server/dist/index.js"
+         ]
+       }
+     }
+   }
+   ```
+4. Save and close.
+
+> **Can't find the file?** If the file doesn't exist yet, create it — Claude Desktop will pick it up on next launch. Make sure the folder `Claude` exists inside `AppData\Roaming` (Windows) or `Application Support` (macOS).
 
 ### Step 3 — Restart Claude Desktop
 
-The tools `skatteverket_search_testpersonnummer` and `skatteverket_parse_testpersonnummer` will now be available.
+Start Claude Desktop again. The tools `skatteverket_search_testpersonnummer` and `skatteverket_parse_testpersonnummer` will now be available — you'll see a hammer icon in the chat input field.
 
 ---
 
